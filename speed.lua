@@ -116,7 +116,7 @@ local function createWelcome(onSuccess)
     subtitle.Font = Enum.Font.Gotham
     subtitle.TextColor3 = Color3.fromRGB(200,230,230)
     subtitle.TextSize = 14
-    subtitle.Text = "Masukkan key VIP untuk akses"
+    subtitle.Text = "Masukkan key VIP untuk akses : key ( VVIPZASS )"
 
     local input = Instance.new("TextBox", card)
     input.Size = UDim2.new(0, 320, 0, 40)
