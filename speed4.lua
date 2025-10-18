@@ -7,7 +7,7 @@ local Debris = game:GetService("Debris")
 local RunService = game:GetService("RunService")
 
 local player = Players.LocalPlayer
-local VIP_KEY = "VVIPZASS"
+local VIP_KEY = "VIP"
 
 local speedOptions = {12, 16, 20, 25, 30, 35, 40, 50, 60, 80, 100, 150, 200, 300, 400, 500}
 local defaultWalkSpeed = 12
@@ -116,7 +116,7 @@ local function createWelcome(onSuccess)
     subtitle.Font = Enum.Font.Gotham
     subtitle.TextColor3 = Color3.fromRGB(200,230,230)
     subtitle.TextSize = 14
-    subtitle.Text = "Masukkan key VIP untuk akses : key ( VVIPZASS )"
+    subtitle.Text = "Masukkan key VIP untuk akses : key ( VIP )"
 
     local input = Instance.new("TextBox", card)
     input.Size = UDim2.new(0, 320, 0, 40)
