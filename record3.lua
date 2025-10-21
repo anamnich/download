@@ -216,7 +216,7 @@ submitBtn.MouseButton1Click:Connect(function()
 					dir = hum.MoveDirection,
 					speed = hum.WalkSpeed
 				})
-				task.wait(0.05)
+				task.wait(1)
 			end
 		end
 
