@@ -348,13 +348,13 @@ local function createMainUI()
         if frame.Visible then
             frame.Visible = false
             miniFrame = Instance.new("TextButton", gui)
-            miniFrame.Size = UDim2.new(0, 120, 0, 34)
+            miniFrame.Size = UDim2.new(0, 90, 0, 34)
             miniFrame.AnchorPoint = Vector2.new(1, 0)
             miniFrame.Position = UDim2.new(1, -10, 0.15, 0)
             miniFrame.BackgroundColor3 = Color3.fromRGB(0,220,255)
             miniFrame.Text = "⚡️ ZassXd Hub"
             miniFrame.Font = Enum.Font.GothamBold
-            miniFrame.TextSize = 14
+            miniFrame.TextSize = 9
             miniFrame.TextColor3 = Color3.new(0,0,0)
             Instance.new("UICorner", miniFrame).CornerRadius = UDim.new(0,8)
             miniFrame.MouseButton1Click:Connect(function()
