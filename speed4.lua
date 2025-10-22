@@ -348,7 +348,7 @@ local function createMainUI()
         if frame.Visible then
             frame.Visible = false
             miniFrame = Instance.new("TextButton", gui)
-            miniFrame.Size = UDim2.new(0, 90, 0, 34)
+            miniFrame.Size = UDim2.new(0, 75, 0, 34)
             miniFrame.AnchorPoint = Vector2.new(1, 0)
             miniFrame.Position = UDim2.new(1, -10, 0.15, 0)
             miniFrame.BackgroundColor3 = Color3.fromRGB(0,220,255)
