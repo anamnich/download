@@ -154,7 +154,7 @@ RunService.RenderStepped:Connect(function()
 	if cameraFollow and currentTarget and currentTarget.Character and currentTarget.Character:FindFirstChild("HumanoidRootPart") then
 		local hrp = currentTarget.Character.HumanoidRootPart
 		local rotation = CFrame.Angles(0, math.rad(yaw), 0) * CFrame.Angles(math.rad(pitch), 0, 0)
-		local offset = rotation:VectorToWorldSpace(Vector3.new(0, 4, 10))
+		local offset = rotation:VectorToWorldSpace(Vector3.new(0, 8, 30))
 		local targetCFrame = CFrame.new(hrp.Position + offset, hrp.Position)
 		camera.CameraType = Enum.CameraType.Scriptable
 		camera.CFrame = camera.CFrame:Lerp(targetCFrame, smoothSpeed)
