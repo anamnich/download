@@ -185,7 +185,7 @@ followButton.MouseButton1Click:Connect(function()
 
 			-- Cinematic zoom
 			local startCFrame = CFrame.new(hrp.Position + Vector3.new(0, 80, 100), hrp.Position)
-			local endCFrame = hrp.CFrame * CFrame.new(0, 6, 12)
+			local endCFrame = hrp.CFrame * CFrame.new(0, 10, 22)
 			camera.CFrame = startCFrame
 
 			local tween = TweenService:Create(camera, TweenInfo.new(2.5, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {CFrame = endCFrame})
