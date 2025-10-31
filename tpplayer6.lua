@@ -155,9 +155,14 @@ RunService.RenderStepped:Connect(function()
 		local hrp = currentTarget.Character.HumanoidRootPart
 		local rotation = CFrame.Angles(0, math.rad(yaw), 0) * CFrame.Angles(math.rad(pitch), 0, 0)
 		local offset = rotation:VectorToWorldSpace(Vector3.new(0, 8, 30))
-		local targetCFrame = CFrame.new(hrp.Position + offset, hrp.Position)
-		camera.CameraType = Enum.CameraType.Scriptable
-		camera.CFrame = camera.CFrame:Lerp(targetCFrame, smoothSpeed)
+		-- Kamera tetap di posisi mengikuti target, tapi arah (rotation) bebas kamu kontrol
+local camPos = hrp.Position + rotation:VectorToWorldSpace(Vector3.new(0, 10, 18))
+local camRot = CFrame.Angles(math.rad(pitch), math.rad(yaw), 0)
+local targetCFrame = CFrame.new(camPos) * camRot
+
+camera.CameraType = Enum.CameraType.Scriptable
+camera.CFrame = camera.CFrame:Lerp(targetCFrame, smoothSpeed)
+
 	end
 end)
 
