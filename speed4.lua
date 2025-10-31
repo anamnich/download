@@ -8,7 +8,7 @@ local RunService = game:GetService("RunService")
 
 local player = Players.LocalPlayer
 
-local speedOptions = {12, 16, 20, 25, 30, 35, 40, 50, 60, 80, 100, 150, 200, 300, 400, 500}
+local speedOptions = {12, 16, 20, 25, 30, 35, 40, 50, 60, 80, 100, 150, 200, 300, 400, 500, 600, 700, 800, 900, 1000}
 local defaultWalkSpeed = 12
 local currentSpeedIndex = 2 -- default index pointing to 16
 local infiniteJumpEnabled = false
@@ -154,8 +154,8 @@ local function createMainUI()
     Instance.new("UICorner", btnDown).CornerRadius = UDim.new(0, 8)
 
     -- INFINITE JUMP & JUMP HEIGHT SETUP (integrated)
-    local JumpHeightSteps = {40, 100, 150, 200, 250, 300, 350, 400, 450, 500, 600, 700, 800, 900, 1000, 1500, 2000}
-    local InfiniteJumpHeight = 40 -- default JumpPower
+    local JumpHeightSteps = {30, 35, 40, 100, 150, 200, 250, 300, 350, 400, 450, 500, 600, 700, 800, 900, 1000, 1500, 2000}
+    local InfiniteJumpHeight = 30 -- default JumpPower
 
     local btnJump = Instance.new("TextButton", frame)
     btnJump.Size = UDim2.new(0.88, 0, 0, 32)
