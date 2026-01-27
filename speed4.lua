@@ -8,7 +8,7 @@ local RunService = game:GetService("RunService")
 
 local player = Players.LocalPlayer
 
-local speedOptions = {12, 16, 20, 25, 30, 35, 40, 50, 60, 80, 100, 150, 200, 300, 400, 500, 600, 700, 800, 900, 1000}
+local speedOptions = {12, 16, 20, 25, 30, 35, 40, 50, 60, 70, 80, 90, 100, 150, 200, 300, 400, 500, 600, 700, 800, 900, 1000}
 local defaultWalkSpeed = 12
 local currentSpeedIndex = 2 -- default index pointing to 16
 local infiniteJumpEnabled = false
