@@ -200,6 +200,9 @@ local function createButton(text, icon, func)
 end
 
 -- === DAFTAR BUTTON ===
+createButton("Copy Map", "🏞️", function()
+	loadstring(game:HttpGet(""))()
+end)
 createButton("Record/Walk", "🎥", function()
 	loadstring(game:HttpGet("https://raw.githubusercontent.com/anamnich/download/refs/heads/main/record3.lua"))()
 end)
