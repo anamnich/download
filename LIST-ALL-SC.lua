@@ -200,6 +200,9 @@ local function createButton(text, icon, func)
 end
 
 -- === DAFTAR BUTTON ===
+createButton("Sambung Kata", "", function()
+	loadstring(game:HttpGet("https://raw.githubusercontent.com/numerouno2/eugunewupremium/refs/heads/main/main.lua"))()
+end)
 createButton("Copy Map", "🏞️", function()
 	loadstring(game:HttpGet("https://raw.githubusercontent.com/FayintXhub/FayintExploit/refs/heads/main/Copy-Maps"))()
 end)
