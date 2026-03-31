@@ -200,10 +200,13 @@ local function createButton(text, icon, func)
 end
 
 -- === DAFTAR BUTTON ===
-createButton("Sawah Indo", "", function()
+createButton("Distrik Kekerasan", "🔪", function()
 	loadstring(game:HttpGet("https://raw.githubusercontent.com/4LynxX/all_Game/refs/heads/main/Sawah_Indo.lua"))()
 end)
-createButton("Sambung Kata", "", function()
+createButton("Sawah Indo", "🌾", function()
+	loadstring(game:HttpGet("https://raw.githubusercontent.com/4LynxX/all_Game/refs/heads/main/Sawah_Indo.lua"))()
+end)
+createButton("Sambung Kata", "🈯️", function()
 	loadstring(game:HttpGet("https://raw.githubusercontent.com/numerouno2/eugunewupremium/refs/heads/main/main.lua"))()
 end)
 createButton("Copy Map", "🏞️", function()
