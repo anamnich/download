@@ -200,6 +200,12 @@ local function createButton(text, icon, func)
 end
 
 -- === DAFTAR BUTTON ===
+createButton("Laser", "🔦", function()
+	loadstring(game:HttpGet("https://mpangppxhub.vercel.app/laserpiwpiw"))()
+end)
+createButton("Sc NoCounter", "💀", function()
+	loadstring(game:HttpGet("https://raw.githubusercontent.com/FayintXhub/FayintExploit/refs/heads/main/NC-Full"))()
+end)
 createButton("Distrik Kekerasan", "🔪", function()
 	loadstring(game:HttpGet("https://raw.githubusercontent.com/4LynxX/all_Game/refs/heads/main/Sawah_Indo.lua"))()
 end)
