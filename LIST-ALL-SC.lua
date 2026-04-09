@@ -1,47 +1,83 @@
+-- ZassXd Official GUI Script
+-- Roblox Lua GUI dengan tampilan dark modern + Whitelist System
+
 local Players = game:GetService("Players")
 local TweenService = game:GetService("TweenService")
 local UserInputService = game:GetService("UserInputService")
 
 local LocalPlayer = Players.LocalPlayer
+
 -- ============================================================
--- WHITELIST SYSTEM (RAW GITHUB)
+-- WHITELIST SYSTEM
 -- ============================================================
+
+local WHITELIST_URL = "https://raw.githubusercontent.com/anamnich/whitelist/refs/heads/main/whitelist.json"
+-- ⚠️ GANTI URL di atas dengan URL raw file whitelist JSON GitHub kamu
+
+--[[
+    Format whitelist.json:
+    {
+        "whitelist": [
+            "PlayerUsername1",
+            "PlayerUsername2",
+            "PlayerUsername3"
+        ]
+    }
+]]
 
 local HttpService = game:GetService("HttpService")
 
-local WHITELIST_URL = "https://raw.githubusercontent.com/ZassTdr/whitelist/refs/heads/main/whitelist.json" 
--- contoh: https://raw.githubusercontent.com/username/repo/main/whitelist.txt
-
 local function CheckWhitelist()
-    local success, response = pcall(function()
-        return game:HttpGet(WHITELIST_URL)
-    end)
+    -- Fetch raw JSON
+    local fetchOk, result = pcall(game.HttpGet, game, WHITELIST_URL, true)
 
-    if not success then
-        warn("[Whitelist] Gagal mengambil data!")
-        LocalPlayer:Kick("Whitelist error, coba lagi nanti.")
-        return
+    if not fetchOk or not result or result == "" then
+        warn("[ZassXd] HttpGet gagal: " .. tostring(result))
+        LocalPlayer:Kick("❌ Gagal fetch whitelist. Coba lagi nanti.")
+        return false
     end
 
-    local allowed = false
+    -- Bersihkan BOM & whitespace di awal/akhir
+    result = result:gsub("^\xEF\xBB\xBF", "")
+    result = result:match("^%s*(.-)%s*$")
+
+    -- Parse JSON
+    local parseOk, data = pcall(HttpService.JSONDecode, HttpService, result)
+
+    if not parseOk then
+        warn("[ZassXd] JSONDecode gagal: " .. tostring(data))
+        LocalPlayer:Kick("❌ Whitelist format error. Hubungi admin.")
+        return false
+    end
+
+    if type(data) ~= "table" then
+        warn("[ZassXd] JSON tidak valid!")
+        LocalPlayer:Kick("❌ Whitelist structure error. Hubungi admin.")
+        return false
+    end
+
+    -- Support dua format:
+    -- Array langsung : ["user1", "user2"]
+    -- Object         : {"whitelist": ["user1", "user2"]}
+    local list = (type(data.whitelist) == "table") and data.whitelist or data
+
     local username = LocalPlayer.Name:lower()
 
-    for line in string.gmatch(response, "[^\r\n]+") do
-        if line:lower() == username then
-            allowed = true
-            break
+    for _, entry in ipairs(list) do
+        local clean = tostring(entry):lower():gsub("%s+", "")
+        if clean == username then
+            print("[ZassXd] ✓ Whitelist OK: " .. LocalPlayer.Name)
+            return true
         end
     end
 
-    if not allowed then
-        LocalPlayer:Kick("Kamu tidak ada di whitelist!")
-    else
-        print("[Whitelist] Akses diterima:", LocalPlayer.Name)
-    end
+    warn("[ZassXd] '" .. LocalPlayer.Name .. "' tidak ada di whitelist.")
+    LocalPlayer:Kick("❌ Kamu tidak ada di whitelist ZassXd GUI!\nHubungi admin untuk akses.")
+    return false
 end
 
--- Jalankan whitelist check
-CheckWhitelist()
+-- Cek whitelist sebelum GUI dimuat
+if not CheckWhitelist() then return end
 
 -- ============================================================
 -- UTILITY FUNCTIONS
@@ -196,7 +232,7 @@ local Scripts = {
         },
         {
             Name = "Auto Walk",
-            Desc = "key "Z" record manual bang jangan manja",
+            Desc = "key 'Z' record manual bang jangan manja",
             Tags = {"exploit"},
             URL = "https://raw.githubusercontent.com/anamnich/download/refs/heads/main/record3.lua",
         },
@@ -471,24 +507,26 @@ local function CreateScriptCard(data)
     DescLabel.Parent = Card
 
     -- Tags
-    local TagX = 16
-    for _, tag in pairs(data.Tags) do
-        local TagBadge = Instance.new("TextLabel")
-        TagBadge.Size = UDim2.new(0, #tag * 8 + 16, 0, 20)
-        TagBadge.Position = UDim2.new(0, TagX, 0, 60)
-        TagBadge.BackgroundColor3 = Color3.fromRGB(20, 45, 60)
-        TagBadge.Text = tag
-        TagBadge.TextColor3 = Color3.fromRGB(0, 188, 212)
-        TagBadge.TextSize = 11
-        TagBadge.Font = Enum.Font.Gotham
-        TagBadge.BorderSizePixel = 0
-        TagBadge.Parent = Card
-        Instance.new("UICorner", TagBadge).CornerRadius = UDim.new(0, 5)
-        local TS = Instance.new("UIStroke")
-        TS.Color = Color3.fromRGB(0, 120, 150)
-        TS.Thickness = 1
-        TS.Parent = TagBadge
-        TagX = TagX + #tag * 8 + 26
+    if data.Tags then
+        local TagX = 16
+        for _, tag in pairs(data.Tags) do
+            local TagBadge = Instance.new("TextLabel")
+            TagBadge.Size = UDim2.new(0, #tag * 8 + 16, 0, 20)
+            TagBadge.Position = UDim2.new(0, TagX, 0, 60)
+            TagBadge.BackgroundColor3 = Color3.fromRGB(20, 45, 60)
+            TagBadge.Text = tag
+            TagBadge.TextColor3 = Color3.fromRGB(0, 188, 212)
+            TagBadge.TextSize = 11
+            TagBadge.Font = Enum.Font.Gotham
+            TagBadge.BorderSizePixel = 0
+            TagBadge.Parent = Card
+            Instance.new("UICorner", TagBadge).CornerRadius = UDim.new(0, 5)
+            local TS = Instance.new("UIStroke")
+            TS.Color = Color3.fromRGB(0, 120, 150)
+            TS.Thickness = 1
+            TS.Parent = TagBadge
+            TagX = TagX + #tag * 8 + 26
+        end
     end
 
     -- Status label
@@ -503,7 +541,10 @@ local function CreateScriptCard(data)
     StatusLabel.TextXAlignment = Enum.TextXAlignment.Left
     StatusLabel.Parent = Card
 
-    -- Execute Button (Jalankan via loadstring)
+    -- Jika tidak ada URL (misal Info), jangan buat tombol
+    if not data.URL then return end
+
+    -- Execute Button
     local ExecBtn = Instance.new("TextButton")
     ExecBtn.Size = UDim2.new(0, 130, 0, 36)
     ExecBtn.Position = UDim2.new(0, 16, 0, 86)
@@ -544,7 +585,6 @@ local function CreateScriptCard(data)
             end)
 
             if ok then
-                -- Sukses
                 ExecBtn.Text = "✓ Berhasil"
                 ExecBtn.TextColor3 = Color3.fromRGB(0, 255, 160)
                 StatusLabel.Text = "✓ Script berhasil dijalankan!"
@@ -560,7 +600,6 @@ local function CreateScriptCard(data)
                     StatusLabel.Text = ""
                 end)
             else
-                -- Gagal
                 ExecBtn.Text = "✗ Gagal"
                 ExecBtn.TextColor3 = Color3.fromRGB(255, 90, 90)
                 StatusLabel.Text = "✗ Gagal! Cek URL script."
@@ -687,7 +726,7 @@ SearchBox:GetPropertyChangedSignal("Text"):Connect(function()
     CategoryTitle.Text = "HASIL PENCARIAN"
     for _, list in pairs(Scripts) do
         for _, s in pairs(list) do
-            if s.Name:lower():find(query) or s.Desc:lower():find(query) then
+            if s.Name and s.Desc and (s.Name:lower():find(query) or s.Desc:lower():find(query)) then
                 CreateScriptCard(s)
             end
         end
@@ -699,4 +738,4 @@ LoadCategory("Fuun")
 UpdateNavButtons("Fuun")
 Tween(MainFrame, {Position = UDim2.new(0.5, -350, 0.5, -240)}, 0.4, Enum.EasingStyle.Back)
 
-print("[ZassXd GUI] Loaded! Ganti semua URL 'GANTI_URL_DISINI' dengan URL Pastebin/GitHub raw milikmu.")
+print("[ZassXd GUI] Loaded! Whitelist verified for: " .. LocalPlayer.Name)
