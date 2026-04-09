@@ -4,7 +4,6 @@ local UserInputService = game:GetService("UserInputService")
 local LocalPlayer = Players.LocalPlayer
 local WHITELIST_URL = "https://raw.githubusercontent.com/anamnich/whitelist/refs/heads/main/whitelist.json"
 local HttpService = game:GetService("HttpService")
-
 local function CheckWhitelist()
     local fetchOk, result = pcall(game.HttpGet, game, WHITELIST_URL, true)
 
@@ -52,7 +51,9 @@ local function CheckWhitelist()
     return false
 end
 
-if not CheckWhitelist() then return end
+if not CheckWhitelist() then
+    return
+end
 
 -- ============================================================
 -- RESPONSIVE SYSTEM
@@ -64,40 +65,63 @@ local function GetScreenSize()
     local vp = Camera.ViewportSize
     local w, h = vp.X, vp.Y
 
-    local isTouch   = UserInputService.TouchEnabled
-    local hasKbd    = UserInputService.KeyboardEnabled
+    local isTouch = UserInputService.TouchEnabled
+    local hasKbd = UserInputService.KeyboardEnabled
     local isDesktop = hasKbd or (not isTouch)
-    local isTablet  = isTouch and (w >= 700)
+    local isTablet = isTouch and (w >= 700)
     -- mobile = touch + lebar < 700
 
     if isDesktop then
         return {
-            guiW=700, guiH=480, sidebarW=190, cardH=130,
-            titleSize=15, subSize=11, navSize=14,
-            cardName=16, cardDesc=13,
-            searchH=38, navH=42,
-            showExclusive=true, iconOnly=false, label="desktop",
+            guiW = 700,
+            guiH = 480,
+            sidebarW = 190,
+            cardH = 130,
+            titleSize = 15,
+            subSize = 11,
+            navSize = 14,
+            cardName = 16,
+            cardDesc = 13,
+            searchH = 38,
+            navH = 42,
+            showExclusive = true,
+            iconOnly = false,
+            label = "desktop"
         }
     elseif isTablet then
         return {
-            guiW=math.min(math.floor(w*0.93), 680),
-            guiH=math.min(math.floor(h*0.80), 440),
-            sidebarW=155, cardH=130,
-            titleSize=13, subSize=10, navSize=12,
-            cardName=14, cardDesc=12,
-            searchH=34, navH=38,
-            showExclusive=true, iconOnly=false, label="tablet",
+            guiW = math.min(math.floor(w * 0.93), 680),
+            guiH = math.min(math.floor(h * 0.80), 440),
+            sidebarW = 155,
+            cardH = 130,
+            titleSize = 13,
+            subSize = 10,
+            navSize = 12,
+            cardName = 14,
+            cardDesc = 12,
+            searchH = 34,
+            navH = 38,
+            showExclusive = true,
+            iconOnly = false,
+            label = "tablet"
         }
     else
         -- Mobile / HP
         return {
-            guiW=math.floor(w*0.97),
-            guiH=math.floor(h*0.88),
-            sidebarW=90, cardH=128,
-            titleSize=11, subSize=9, navSize=11,
-            cardName=13, cardDesc=11,
-            searchH=30, navH=34,
-            showExclusive=false, iconOnly=true, label="mobile",
+            guiW = math.floor(w * 0.97),
+            guiH = math.floor(h * 0.88),
+            sidebarW = 90,
+            cardH = 128,
+            titleSize = 11,
+            subSize = 9,
+            navSize = 11,
+            cardName = 13,
+            cardDesc = 11,
+            searchH = 30,
+            navH = 34,
+            showExclusive = false,
+            iconOnly = true,
+            label = "mobile"
         }
     end
 end
@@ -115,8 +139,7 @@ local function MakeDraggable(frame, dragArea)
     local dragging, dragInput, dragStart, startPos
     dragArea = dragArea or frame
     dragArea.InputBegan:Connect(function(input)
-        if input.UserInputType == Enum.UserInputType.MouseButton1
-            or input.UserInputType == Enum.UserInputType.Touch then
+        if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
             dragging = true
             dragStart = input.Position
             startPos = frame.Position
@@ -128,18 +151,15 @@ local function MakeDraggable(frame, dragArea)
         end
     end)
     dragArea.InputChanged:Connect(function(input)
-        if input.UserInputType == Enum.UserInputType.MouseMovement
-            or input.UserInputType == Enum.UserInputType.Touch then
+        if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
             dragInput = input
         end
     end)
     UserInputService.InputChanged:Connect(function(input)
         if input == dragInput and dragging then
             local delta = input.Position - dragStart
-            frame.Position = UDim2.new(
-                startPos.X.Scale, startPos.X.Offset + delta.X,
-                startPos.Y.Scale, startPos.Y.Offset + delta.Y
-            )
+            frame.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale,
+                startPos.Y.Offset + delta.Y)
         end
     end)
 end
@@ -149,61 +169,120 @@ end
 -- ============================================================
 
 local Scripts = {
-    Fuun = {
-        {Name="Indo Voice", Desc="Khusus Premium excutor/loader", Tags={"Fuun"},
-         URL="https://raw.githubusercontent.com/danuuww/scripts/refs/heads/main/free.lua"},
-        {Name="Fish Zar", Desc="ytta", Tags={"Fuun"},
-         URL="https://raw.githubusercontent.com/4LynxX/all_Game/refs/heads/main/fishzar.lua"},
-        {Name="Fish It", Desc="usahakan server privat.", Tags={"Fuun"},
-         URL="https://raw.githubusercontent.com/4LynxX/all_Game/refs/heads/main/Fish_It.lua"},
-        {Name="Vd Kematian", Desc="ytta.", Tags={"Fuun"},
-         URL="https://raw.githubusercontent.com/numerouno2/eugunewupremium/refs/heads/main/main.lua"},
-        {Name="Sambung Kata", Desc="ytta.", Tags={"Fuun"},
-         URL="https://raw.githubusercontent.com/numerouno2/eugunewupremium/refs/heads/main/main.lua"},
-        {Name="Sawah Indo", Desc="ytta.", Tags={"Fuun"},
-         URL="https://raw.githubusercontent.com/4LynxX/all_Game/refs/heads/main/Sawah_Indo.lua"},
-    },
-    Player = {
-        {Name="Fly", Desc="Terbang bebas di udara dengan speed control.", Tags={"Player"},
-         URL="https://raw.githubusercontent.com/anamnich/download/refs/heads/main/fly8.lua"},
-        {Name="Clone Ava", Desc="ini visual", Tags={"Player"},
-         URL="https://raw.githubusercontent.com/anamnich/download/refs/heads/main/cloneava7.lua"},
-        {Name="Fps Boster", Desc="untuk meringankan devis", Tags={"Player"},
-         URL="https://raw.githubusercontent.com/anamnich/download/refs/heads/main/fps2.lua"},
-        {Name="Server Sepi", Desc="ini untuk mencari server yang sepi pemain", Tags={"Player"},
-         URL="https://raw.githubusercontent.com/anamnich/download/refs/heads/main/searchserver.lua"},
-    },
-    Exploit = {
-        {Name="Report Player", Desc="ini untuk report player setiap 1 menit", Tags={"exploit"},
-         URL="https://raw.githubusercontent.com/xploitforceofficial-stack/rathubpublic/refs/heads/main/rathub.lua"},
-        {Name="NoCounter", Desc="sc ini bukan dari saya ini dari no counter famely", Tags={"exploit"},
-         URL="https://raw.githubusercontent.com/FayintXhub/FayintExploit/refs/heads/main/NC-Full"},
-        {Name="Infinite Yeild", Desc="untuk membuka isi dalam map pakai dex", Tags={"exploit"},
-         URL="https://raw.githubusercontent.com/anamnich/download/refs/heads/main/iy1.lua"},
-        {Name="Flyfing", Desc="memantulkan player lain.", Tags={"exploit"},
-         URL="https://pastefy.app/DW3NUZcN/raw"},
-        {Name="Speed", Desc="control speed dan jump", Tags={"exploit"},
-         URL="https://raw.githubusercontent.com/anamnich/download/refs/heads/main/speed4.lua"},
-        {Name="Laser", Desc="untuk rusuh", Tags={"exploit"},
-         URL="https://mpangppxhub.vercel.app/laserpiwpiw"},
-        {Name="Kordinat", Desc="ini untuk save kodinat, agar bisa di combo sama script teleport", Tags={"exploit"},
-         URL="https://raw.githubusercontent.com/anamnich/download/refs/heads/main/kordinat.lua"},
-        {Name="Auto Walk", Desc="key 'Z' record manual bang jangan manja", Tags={"exploit"},
-         URL="https://raw.githubusercontent.com/anamnich/download/refs/heads/main/record3.lua"},
-    },
-    Teleport = {
-        {Name="Teleport to Spown", Desc="Teleport ke posisi player lain.", Tags={"teleport"},
-         URL="https://raw.githubusercontent.com/anamnich/download/refs/heads/main/tp5.lua"},
-        {Name="Teleport to Player", Desc="Kembali ke spawn point.", Tags={"teleport"},
-         URL="https://raw.githubusercontent.com/anamnich/download/refs/heads/main/tpplayer6.lua"},
-    },
-    Copy = {
-        {Name="Copy Map No Train", Desc="ini adalah fiture copy map yang bisa di buka untuk pc/laptop.", Tags={"copy"},
-         URL="https://raw.githubusercontent.com/FayintXhub/FayintExploit/refs/heads/main/Copy-Maps"},
-    },
-    Info = {
-        {Name="gada info banh :V", Desc=""},
-    },
+    Fuun = {{
+        Name = "Indo Voice",
+        Desc = "Khusus Premium excutor/loader",
+        Tags = {"Fuun"},
+        URL = "https://raw.githubusercontent.com/danuuww/scripts/refs/heads/main/free.lua"
+    }, {
+        Name = "Fish Zar",
+        Desc = "ytta",
+        Tags = {"Fuun"},
+        URL = "https://raw.githubusercontent.com/4LynxX/all_Game/refs/heads/main/fishzar.lua"
+    }, {
+        Name = "Fish It",
+        Desc = "usahakan server privat.",
+        Tags = {"Fuun"},
+        URL = "https://raw.githubusercontent.com/4LynxX/all_Game/refs/heads/main/Fish_It.lua"
+    }, {
+        Name = "Vd Kematian",
+        Desc = "ytta.",
+        Tags = {"Fuun"},
+        URL = "https://raw.githubusercontent.com/numerouno2/eugunewupremium/refs/heads/main/main.lua"
+    }, {
+        Name = "Sambung Kata",
+        Desc = "ytta.",
+        Tags = {"Fuun"},
+        URL = "https://raw.githubusercontent.com/numerouno2/eugunewupremium/refs/heads/main/main.lua"
+    }, {
+        Name = "Sawah Indo",
+        Desc = "ytta.",
+        Tags = {"Fuun"},
+        URL = "https://raw.githubusercontent.com/4LynxX/all_Game/refs/heads/main/Sawah_Indo.lua"
+    }},
+    Player = {{
+        Name = "Fly",
+        Desc = "Terbang bebas di udara dengan speed control.",
+        Tags = {"Player"},
+        URL = "https://raw.githubusercontent.com/anamnich/download/refs/heads/main/fly8.lua"
+    }, {
+        Name = "Clone Ava",
+        Desc = "ini visual",
+        Tags = {"Player"},
+        URL = "https://raw.githubusercontent.com/anamnich/download/refs/heads/main/cloneava7.lua"
+    }, {
+        Name = "Fps Boster",
+        Desc = "untuk meringankan devis",
+        Tags = {"Player"},
+        URL = "https://raw.githubusercontent.com/anamnich/download/refs/heads/main/fps2.lua"
+    }, {
+        Name = "Server Sepi",
+        Desc = "ini untuk mencari server yang sepi pemain",
+        Tags = {"Player"},
+        URL = "https://raw.githubusercontent.com/anamnich/download/refs/heads/main/searchserver.lua"
+    }},
+    Exploit = {{
+        Name = "Report Player",
+        Desc = "ini untuk report player setiap 1 menit",
+        Tags = {"exploit"},
+        URL = "https://raw.githubusercontent.com/xploitforceofficial-stack/rathubpublic/refs/heads/main/rathub.lua"
+    }, {
+        Name = "NoCounter",
+        Desc = "sc ini bukan dari saya ini dari no counter famely",
+        Tags = {"exploit"},
+        URL = "https://raw.githubusercontent.com/FayintXhub/FayintExploit/refs/heads/main/NC-Full"
+    }, {
+        Name = "Infinite Yeild",
+        Desc = "untuk membuka isi dalam map pakai dex",
+        Tags = {"exploit"},
+        URL = "https://raw.githubusercontent.com/anamnich/download/refs/heads/main/iy1.lua"
+    }, {
+        Name = "Flyfing",
+        Desc = "memantulkan player lain.",
+        Tags = {"exploit"},
+        URL = "https://pastefy.app/DW3NUZcN/raw"
+    }, {
+        Name = "Speed",
+        Desc = "control speed dan jump",
+        Tags = {"exploit"},
+        URL = "https://raw.githubusercontent.com/anamnich/download/refs/heads/main/speed4.lua"
+    }, {
+        Name = "Laser",
+        Desc = "untuk rusuh",
+        Tags = {"exploit"},
+        URL = "https://mpangppxhub.vercel.app/laserpiwpiw"
+    }, {
+        Name = "Kordinat",
+        Desc = "ini untuk save kodinat, agar bisa di combo sama script teleport",
+        Tags = {"exploit"},
+        URL = "https://raw.githubusercontent.com/anamnich/download/refs/heads/main/kordinat.lua"
+    }, {
+        Name = "Auto Walk",
+        Desc = "key 'Z' record manual bang jangan manja",
+        Tags = {"exploit"},
+        URL = "https://raw.githubusercontent.com/anamnich/download/refs/heads/main/record3.lua"
+    }},
+    Teleport = {{
+        Name = "Teleport to Spown",
+        Desc = "Teleport ke posisi player lain.",
+        Tags = {"teleport"},
+        URL = "https://raw.githubusercontent.com/anamnich/download/refs/heads/main/tp5.lua"
+    }, {
+        Name = "Teleport to Player",
+        Desc = "Kembali ke spawn point.",
+        Tags = {"teleport"},
+        URL = "https://raw.githubusercontent.com/anamnich/download/refs/heads/main/tpplayer6.lua"
+    }},
+    Copy = {{
+        Name = "Copy Map No Train",
+        Desc = "ini adalah fiture copy map yang bisa di buka untuk pc/laptop.",
+        Tags = {"copy"},
+        URL = "https://raw.githubusercontent.com/FayintXhub/FayintExploit/refs/heads/main/Copy-Maps"
+    }},
+    Info = {{
+        Name = "gada info banh :V",
+        Desc = ""
+    }}
 }
 
 -- ============================================================
@@ -224,7 +303,7 @@ ScreenGui.Parent = LocalPlayer.PlayerGui
 local MainFrame = Instance.new("Frame")
 MainFrame.Name = "MainFrame"
 MainFrame.Size = UDim2.new(0, S.guiW, 0, S.guiH)
-MainFrame.Position = UDim2.new(0.5, -S.guiW/2, 1.5, 0)
+MainFrame.Position = UDim2.new(0.5, -S.guiW / 2, 1.5, 0)
 MainFrame.BackgroundColor3 = Color3.fromRGB(13, 20, 28)
 MainFrame.BorderSizePixel = 0
 MainFrame.Parent = ScreenGui
@@ -246,7 +325,7 @@ AvatarBadge.BackgroundColor3 = Color3.fromRGB(0, 188, 212)
 AvatarBadge.Parent = TopBar
 Instance.new("UICorner", AvatarBadge).CornerRadius = UDim.new(0, 6)
 local BadgeLabel = Instance.new("TextLabel")
-BadgeLabel.Size = UDim2.new(1,0,1,0)
+BadgeLabel.Size = UDim2.new(1, 0, 1, 0)
 BadgeLabel.BackgroundTransparency = 1
 BadgeLabel.Text = "ZX"
 BadgeLabel.TextColor3 = Color3.fromRGB(10, 16, 24)
@@ -303,8 +382,12 @@ CloseBtn.TextSize = 15
 CloseBtn.Font = Enum.Font.GothamBold
 CloseBtn.Parent = TopBar
 CloseBtn.MouseButton1Click:Connect(function()
-    Tween(MainFrame, {Position = UDim2.new(0.5, -S.guiW/2, 1.5, 0)}, 0.3)
-    task.delay(0.35, function() ScreenGui:Destroy() end)
+    Tween(MainFrame, {
+        Position = UDim2.new(0.5, -S.guiW / 2, 1.5, 0)
+    }, 0.3)
+    task.delay(0.35, function()
+        ScreenGui:Destroy()
+    end)
 end)
 
 MakeDraggable(MainFrame, TopBar)
@@ -484,13 +567,15 @@ local function CreateScriptCard(data)
     StatusLabel.TextXAlignment = Enum.TextXAlignment.Left
     StatusLabel.Parent = Card
 
-    if not data.URL then return end
+    if not data.URL then
+        return
+    end
 
     -- Ukuran tombol sesuai device
-    local btnW  = S.iconOnly and 95  or 125
-    local btnW2 = S.iconOnly and 68  or 85
-    local btnH  = S.iconOnly and 28  or 32
-    local btnY  = 76
+    local btnW = S.iconOnly and 95 or 125
+    local btnW2 = S.iconOnly and 68 or 85
+    local btnH = S.iconOnly and 28 or 32
+    local btnY = 76
     local btnTxt = S.iconOnly and 11 or 13
 
     -- Execute Button
@@ -512,21 +597,33 @@ local function CreateScriptCard(data)
     EBStroke.Parent = ExecBtn
 
     ExecBtn.MouseEnter:Connect(function()
-        Tween(ExecBtn, {BackgroundColor3 = Color3.fromRGB(0, 70, 100)}, 0.15)
-        Tween(EBStroke, {Color = Color3.fromRGB(0, 188, 212)}, 0.15)
+        Tween(ExecBtn, {
+            BackgroundColor3 = Color3.fromRGB(0, 70, 100)
+        }, 0.15)
+        Tween(EBStroke, {
+            Color = Color3.fromRGB(0, 188, 212)
+        }, 0.15)
     end)
     ExecBtn.MouseLeave:Connect(function()
-        Tween(ExecBtn, {BackgroundColor3 = Color3.fromRGB(22, 35, 50)}, 0.15)
-        Tween(EBStroke, {Color = Color3.fromRGB(50, 80, 110)}, 0.15)
+        Tween(ExecBtn, {
+            BackgroundColor3 = Color3.fromRGB(22, 35, 50)
+        }, 0.15)
+        Tween(EBStroke, {
+            Color = Color3.fromRGB(50, 80, 110)
+        }, 0.15)
     end)
 
     ExecBtn.MouseButton1Click:Connect(function()
-        if not ExecBtn.Active then return end
+        if not ExecBtn.Active then
+            return
+        end
         ExecBtn.Active = false
         ExecBtn.Text = "Loading..."
         StatusLabel.Text = "⏳ Mengambil script..."
         StatusLabel.TextColor3 = Color3.fromRGB(180, 200, 220)
-        Tween(ExecBtn, {BackgroundColor3 = Color3.fromRGB(0, 100, 130)}, 0.1)
+        Tween(ExecBtn, {
+            BackgroundColor3 = Color3.fromRGB(0, 100, 130)
+        }, 0.1)
 
         task.spawn(function()
             local ok, err = pcall(function()
@@ -537,12 +634,16 @@ local function CreateScriptCard(data)
                 ExecBtn.TextColor3 = Color3.fromRGB(0, 255, 160)
                 StatusLabel.Text = "✓ Script berhasil dijalankan!"
                 StatusLabel.TextColor3 = Color3.fromRGB(0, 220, 140)
-                Tween(ExecBtn, {BackgroundColor3 = Color3.fromRGB(0, 70, 55)}, 0.2)
+                Tween(ExecBtn, {
+                    BackgroundColor3 = Color3.fromRGB(0, 70, 55)
+                }, 0.2)
                 CardStroke.Color = Color3.fromRGB(0, 150, 100)
                 task.delay(2.5, function()
                     ExecBtn.Text = "▶ Jalankan"
                     ExecBtn.TextColor3 = Color3.fromRGB(220, 235, 255)
-                    Tween(ExecBtn, {BackgroundColor3 = Color3.fromRGB(22, 35, 50)}, 0.2)
+                    Tween(ExecBtn, {
+                        BackgroundColor3 = Color3.fromRGB(22, 35, 50)
+                    }, 0.2)
                     CardStroke.Color = Color3.fromRGB(35, 55, 75)
                     ExecBtn.Active = true
                     StatusLabel.Text = ""
@@ -552,13 +653,17 @@ local function CreateScriptCard(data)
                 ExecBtn.TextColor3 = Color3.fromRGB(255, 90, 90)
                 StatusLabel.Text = "✗ Gagal! Cek URL script."
                 StatusLabel.TextColor3 = Color3.fromRGB(255, 100, 100)
-                Tween(ExecBtn, {BackgroundColor3 = Color3.fromRGB(80, 20, 20)}, 0.2)
+                Tween(ExecBtn, {
+                    BackgroundColor3 = Color3.fromRGB(80, 20, 20)
+                }, 0.2)
                 CardStroke.Color = Color3.fromRGB(150, 40, 40)
                 warn("[ZassXd] Error '" .. data.Name .. "': " .. tostring(err))
                 task.delay(3, function()
                     ExecBtn.Text = "▶ Jalankan"
                     ExecBtn.TextColor3 = Color3.fromRGB(220, 235, 255)
-                    Tween(ExecBtn, {BackgroundColor3 = Color3.fromRGB(22, 35, 50)}, 0.2)
+                    Tween(ExecBtn, {
+                        BackgroundColor3 = Color3.fromRGB(22, 35, 50)
+                    }, 0.2)
                     CardStroke.Color = Color3.fromRGB(35, 55, 75)
                     ExecBtn.Active = true
                     StatusLabel.Text = ""
@@ -586,10 +691,14 @@ local function CreateScriptCard(data)
     DBStroke.Parent = DetailBtn
 
     DetailBtn.MouseEnter:Connect(function()
-        Tween(DetailBtn, {BackgroundColor3 = Color3.fromRGB(30, 50, 70)}, 0.15)
+        Tween(DetailBtn, {
+            BackgroundColor3 = Color3.fromRGB(30, 50, 70)
+        }, 0.15)
     end)
     DetailBtn.MouseLeave:Connect(function()
-        Tween(DetailBtn, {BackgroundColor3 = Color3.fromRGB(22, 35, 50)}, 0.15)
+        Tween(DetailBtn, {
+            BackgroundColor3 = Color3.fromRGB(22, 35, 50)
+        }, 0.15)
     end)
     DetailBtn.MouseButton1Click:Connect(function()
         game:GetService("StarterGui"):SetCore("SendNotification", {
@@ -608,7 +717,9 @@ local function LoadCategory(category)
     ActiveCategory = category
     CategoryTitle.Text = string.upper(category) .. " SCRIPTS"
     for _, child in pairs(ScrollFrame:GetChildren()) do
-        if child:IsA("Frame") then child:Destroy() end
+        if child:IsA("Frame") then
+            child:Destroy()
+        end
     end
     for _, s in pairs(Scripts[category] or {}) do
         CreateScriptCard(s)
@@ -618,14 +729,16 @@ end
 local function UpdateNavButtons(selected)
     for cat, btn in pairs(NavButtons) do
         if cat == selected then
-            Tween(btn, {BackgroundColor3 = Color3.fromRGB(20, 35, 50)}, 0.2)
+            Tween(btn, {
+                BackgroundColor3 = Color3.fromRGB(20, 35, 50)
+            }, 0.2)
             btn.TextColor3 = Color3.fromRGB(0, 188, 212)
-            ActiveIndicator.Position = UDim2.new(
-                0, 0, 0,
-                btn.AbsolutePosition.Y - Sidebar.AbsolutePosition.Y + (S.navH/2) - 12
-            )
+            ActiveIndicator.Position = UDim2.new(0, 0, 0, btn.AbsolutePosition.Y - Sidebar.AbsolutePosition.Y +
+                (S.navH / 2) - 12)
         else
-            Tween(btn, {BackgroundColor3 = Color3.fromRGB(0,0,0,0)}, 0.2)
+            Tween(btn, {
+                BackgroundColor3 = Color3.fromRGB(0, 0, 0, 0)
+            }, 0.2)
             btn.TextColor3 = Color3.fromRGB(140, 165, 185)
         end
     end
@@ -636,9 +749,7 @@ for i, cat in ipairs(Categories) do
     NavBtn.Size = UDim2.new(1, 0, 0, S.navH)
     NavBtn.BackgroundTransparency = 1
     -- Mobile: ikon saja | Tablet/Desktop: ikon + nama
-    NavBtn.Text = S.iconOnly
-        and ("  " .. CategoryIcons[i])
-        or  ("  " .. CategoryIcons[i] .. "  " .. cat)
+    NavBtn.Text = S.iconOnly and ("  " .. CategoryIcons[i]) or ("  " .. CategoryIcons[i] .. "  " .. cat)
     NavBtn.TextColor3 = Color3.fromRGB(140, 165, 185)
     NavBtn.TextSize = S.navSize
     NavBtn.Font = Enum.Font.Gotham
@@ -653,12 +764,16 @@ for i, cat in ipairs(Categories) do
 
     NavBtn.MouseEnter:Connect(function()
         if ActiveCategory ~= cat then
-            Tween(NavBtn, {TextColor3 = Color3.fromRGB(200, 220, 240)}, 0.15)
+            Tween(NavBtn, {
+                TextColor3 = Color3.fromRGB(200, 220, 240)
+            }, 0.15)
         end
     end)
     NavBtn.MouseLeave:Connect(function()
         if ActiveCategory ~= cat then
-            Tween(NavBtn, {TextColor3 = Color3.fromRGB(140, 165, 185)}, 0.15)
+            Tween(NavBtn, {
+                TextColor3 = Color3.fromRGB(140, 165, 185)
+            }, 0.15)
         end
     end)
     NavBtn.MouseButton1Click:Connect(function()
@@ -671,7 +786,9 @@ end
 SearchBox:GetPropertyChangedSignal("Text"):Connect(function()
     local query = SearchBox.Text:lower()
     for _, child in pairs(ScrollFrame:GetChildren()) do
-        if child:IsA("Frame") then child:Destroy() end
+        if child:IsA("Frame") then
+            child:Destroy()
+        end
     end
     if query == "" then
         LoadCategory(ActiveCategory)
@@ -690,6 +807,8 @@ end)
 -- Init
 LoadCategory("Fuun")
 UpdateNavButtons("Fuun")
-Tween(MainFrame, {Position = UDim2.new(0.5, -S.guiW/2, 0.5, -S.guiH/2)}, 0.4, Enum.EasingStyle.Back)
+Tween(MainFrame, {
+    Position = UDim2.new(0.5, -S.guiW / 2, 0.5, -S.guiH / 2)
+}, 0.4, Enum.EasingStyle.Back)
 
 print("[ZassXd GUI] Ready! Device=" .. S.label .. " | User=" .. LocalPlayer.Name)
