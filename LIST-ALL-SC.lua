@@ -1,20 +1,9 @@
--- ZassXd Official GUI Script
--- Roblox Lua GUI dengan tampilan dark modern + Whitelist System
-
 local Players = game:GetService("Players")
 local TweenService = game:GetService("TweenService")
 local UserInputService = game:GetService("UserInputService")
-
 local LocalPlayer = Players.LocalPlayer
-
--- ============================================================
--- WHITELIST SYSTEM
--- ============================================================
-
 local WHITELIST_URL = "https://raw.githubusercontent.com/anamnich/whitelist/refs/heads/main/whitelist.json"
-
 local HttpService = game:GetService("HttpService")
-
 local function CheckWhitelist()
     -- Fetch raw JSON
     local fetchOk, result = pcall(game.HttpGet, game, WHITELIST_URL, true)
