@@ -12,18 +12,6 @@ local LocalPlayer = Players.LocalPlayer
 -- ============================================================
 
 local WHITELIST_URL = "https://raw.githubusercontent.com/anamnich/whitelist/refs/heads/main/whitelist.json"
--- ⚠️ GANTI URL di atas dengan URL raw file whitelist JSON GitHub kamu
-
---[[
-    Format whitelist.json:
-    {
-        "whitelist": [
-            "PlayerUsername1",
-            "PlayerUsername2",
-            "PlayerUsername3"
-        ]
-    }
-]]
 
 local HttpService = game:GetService("HttpService")
 
