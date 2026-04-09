@@ -1,6 +1,5 @@
 --// DRONE CAMERA v5
 --// Cinematic zoom, free rotation after zoom, follow position, infinite teleport
---// by GPT-5
 
 local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
@@ -33,6 +32,21 @@ title.TextColor3 = Color3.new(1, 1, 1)
 title.Font = Enum.Font.GothamBold
 title.TextSize = 12
 title.Parent = frame
+
+-- === CLOSE BUTTON ===
+local closeBtn = Instance.new("TextButton")
+closeBtn.Size = UDim2.new(0, 22, 0, 22)
+closeBtn.Position = UDim2.new(1, -24, 0, 0)
+closeBtn.BackgroundColor3 = Color3.fromRGB(200, 60, 60)
+closeBtn.Text = "X"
+closeBtn.TextColor3 = Color3.new(1, 1, 1)
+closeBtn.Font = Enum.Font.GothamBold
+closeBtn.TextSize = 12
+closeBtn.Parent = frame
+
+closeBtn.MouseButton1Click:Connect(function()
+	gui.Enabled = false
+end)
 
 local playerList = Instance.new("ScrollingFrame")
 playerList.Size = UDim2.new(1, -10, 1, -90)
@@ -165,7 +179,6 @@ followButton.MouseButton1Click:Connect(function()
 			local hrp = target.Character.HumanoidRootPart
 			camera.CameraType = Enum.CameraType.Scriptable
 
-			-- Cinematic zoom in
 			local startCFrame = CFrame.new(hrp.Position + Vector3.new(0, 80, 100), hrp.Position)
 			local endCFrame = hrp.CFrame * CFrame.new(0, 6, 12)
 			camera.CFrame = startCFrame
@@ -182,7 +195,7 @@ followButton.MouseButton1Click:Connect(function()
 	end
 end)
 
--- === TELEPORT TANPA BATAS ===
+-- === TELEPORT ===
 teleportButton.MouseButton1Click:Connect(function()
 	if not currentTarget then
 		teleportButton.Text = "❌ Pilih dulu"
@@ -200,6 +213,7 @@ teleportButton.MouseButton1Click:Connect(function()
 		camera.CameraType = Enum.CameraType.Scriptable
 		camera.CFrame = targetHRP.CFrame * CFrame.new(0, 5, 10)
 		task.wait(0.2)
+
 		workspace.FallenPartsDestroyHeight = -math.huge
 		myHRP.CFrame = targetHRP.CFrame + Vector3.new(0, 3, 0)
 
