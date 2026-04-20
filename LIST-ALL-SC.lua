@@ -55,9 +55,9 @@ if not CheckWhitelist() then
     return
 end
 
--- ============================================================
+
 -- RESPONSIVE SYSTEM
--- ============================================================
+
 
 local Camera = workspace.CurrentCamera
 
@@ -126,9 +126,9 @@ local function GetScreenSize()
     end
 end
 
--- ============================================================
+
 -- UTILITY FUNCTIONS
--- ============================================================
+
 
 local function Tween(obj, props, duration, style, dir)
     local info = TweenInfo.new(duration or 0.2, style or Enum.EasingStyle.Quad, dir or Enum.EasingDirection.Out)
@@ -164,14 +164,24 @@ local function MakeDraggable(frame, dragArea)
     end)
 end
 
--- ============================================================
+
 -- SCRIPT DATA
--- ============================================================
 
 local Scripts = {
-    Fuun = {{
+Fuun = {{
+        Name = "99 Night",
+        Desc = "ytta",
+        Tags = {"Fuun"},
+        URL = "https://nexus-script.vercel.app/99-Nights-in-the-Forest.lua"
+    },
+    {
+        Name = "Indo Strike",
+        Desc = "ytta",
+        Tags = {"Fuun"},
+        URL = "https://raw.githubusercontent.com/ambonaja/Kultivasi-Ambon/refs/heads/main/apaseh/kontol/indostrikev1"
+    },{
         Name = "Indo Voice",
-        Desc = "Khusus Premium excutor/loader",
+        Desc = "ytta",
         Tags = {"Fuun"},
         URL = "https://raw.githubusercontent.com/danuuww/scripts/refs/heads/main/free.lua"
     }, {
@@ -199,8 +209,21 @@ local Scripts = {
         Desc = "ytta.",
         Tags = {"Fuun"},
         URL = "https://raw.githubusercontent.com/4LynxX/all_Game/refs/heads/main/Sawah_Indo.lua"
-    }},
-    Player = {{
+    },
+{
+        Name = "Empang Indo",
+        Desc = "ytta.",
+        Tags = {"Fuun"},
+        URL = "https://raw.githubusercontent.com/fay23-dam/sazaraaax-script/refs/heads/main/empang-indo.lua"
+    }, {
+        Name = "Sawah Indo",
+        Desc = "ytta.",
+        Tags = {"Fuun"},
+        URL = "https://raw.githubusercontent.com/4LynxX/all_Game/refs/heads/main/Sawah_Indo.lua"
+    }
+},
+
+Player = {{
         Name = "Fly",
         Desc = "Terbang bebas di udara dengan speed control.",
         Tags = {"Player"},
@@ -221,7 +244,13 @@ local Scripts = {
         Tags = {"Player"},
         URL = "https://raw.githubusercontent.com/anamnich/download/refs/heads/main/searchserver.lua"
     }},
-    Exploit = {{
+
+Exploit = {{
+        Name = "FayintXhub",
+        Desc = "",
+        Tags = {"exploit"},
+        URL = "https://raw.githubusercontent.com/FayintXhub/FayintExploit/refs/heads/main/Universal"
+    },{
         Name = "Report Player",
         Desc = "ini untuk report player setiap 1 menit",
         Tags = {"exploit"},
@@ -262,7 +291,15 @@ local Scripts = {
         Tags = {"exploit"},
         URL = "https://raw.githubusercontent.com/anamnich/download/refs/heads/main/record3.lua"
     }},
-    Teleport = {{
+
+Animation = {{
+        Name = "Animasi",
+        Desc = "JOMBIE, PAMVIRE, ADIDAS",
+        Tags = {"Animation"},
+        URL = "https://raw.githubusercontent.com/anamnich/download/refs/heads/main/animations.lua"
+    }},
+
+Teleport = {{
         Name = "Teleport to Spown",
         Desc = "Teleport ke posisi player lain.",
         Tags = {"teleport"},
@@ -273,7 +310,7 @@ local Scripts = {
         Tags = {"teleport"},
         URL = "https://raw.githubusercontent.com/anamnich/download/refs/heads/main/tpplayer6.lua"
     }},
-    Copy = {{
+Copy = {{
         Name = "Copy Map No Train",
         Desc = "ini adalah fiture copy map yang bisa di buka untuk pc/laptop.",
         Tags = {"copy"},
@@ -284,10 +321,6 @@ local Scripts = {
         Desc = ""
     }}
 }
-
--- ============================================================
--- GUI BUILDER
--- ============================================================
 
 local S = GetScreenSize()
 print("[ZassXd] Device detected: " .. S.label .. " (" .. S.guiW .. "x" .. S.guiH .. ")")
@@ -428,8 +461,8 @@ SearchPad.PaddingLeft = UDim.new(0, 8)
 SearchPad.Parent = SearchBox
 
 -- Nav List
-local Categories = {"Fuun", "Player", "Exploit", "Teleport", "Copy", "Info"}
-local CategoryIcons = {"✈", "◈", "▶", "◉", "◆", "⚙"}
+local Categories = {"Fuun", "Player", "Exploit","Animation", "Teleport", "Copy", "Info"}
+local CategoryIcons = {"✈", "◈", "▶","☕︎", "◉", "◆", "⚙"}
 local NavButtons = {}
 local ActiveCategory = "Fuun"
 
@@ -491,9 +524,9 @@ local ScrollPad = Instance.new("UIPadding")
 ScrollPad.PaddingBottom = UDim.new(0, 10)
 ScrollPad.Parent = ScrollFrame
 
--- ============================================================
+
 -- CARD BUILDER
--- ============================================================
+
 
 local function CreateScriptCard(data)
     local Card = Instance.new("Frame")
@@ -709,9 +742,9 @@ local function CreateScriptCard(data)
     end)
 end
 
--- ============================================================
+
 -- NAVIGATION
--- ============================================================
+
 
 local function LoadCategory(category)
     ActiveCategory = category
