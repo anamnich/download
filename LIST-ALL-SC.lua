@@ -246,6 +246,11 @@ Player = {{
     }},
 
 Exploit = {{
+        Name = "Fiqqzr7",
+        Desc = "",
+        Tags = {"exploit"},
+        URL = "https://raw.githubusercontent.com/Fiqqzr7Lua/SCRIPTFIQQZR7/refs/heads/main/Loader%20Fiqqzr7"
+    },{
         Name = "FayintXhub",
         Desc = "",
         Tags = {"exploit"},
