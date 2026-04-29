@@ -355,20 +355,6 @@ TopBar.BorderSizePixel = 0
 TopBar.Parent = MainFrame
 Instance.new("UICorner", TopBar).CornerRadius = UDim.new(0, 12)
 
--- Avatar Badge
-local AvatarBadge = Instance.new("Frame")
-AvatarBadge.Size = UDim2.new(0, 32, 0, 32)
-AvatarBadge.Position = UDim2.new(0, 12, 0.5, -16)
-AvatarBadge.BackgroundColor3 = Color3.fromRGB(0, 188, 212)
-AvatarBadge.Parent = TopBar
-Instance.new("UICorner", AvatarBadge).CornerRadius = UDim.new(0, 6)
-local BadgeImage = Instance.new("ImageLabel")
-BadgeImage.Size = UDim2.new(1, 0, 1, 0)
-BadgeImage.BackgroundTransparency = 1
-BadgeImage.Image = "rbxassetid://89829874726430" -- ganti dengan ID gambar kamu
-BadgeImage.ScaleType = Enum.ScaleType.Fit
-BadgeImage.Parent = AvatarBadge
-
 -- Title
 local TitleLabel = Instance.new("TextLabel")
 TitleLabel.Size = UDim2.new(0, 200, 0, 20)
