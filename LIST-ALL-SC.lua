@@ -362,14 +362,12 @@ AvatarBadge.Position = UDim2.new(0, 12, 0.5, -16)
 AvatarBadge.BackgroundColor3 = Color3.fromRGB(0, 188, 212)
 AvatarBadge.Parent = TopBar
 Instance.new("UICorner", AvatarBadge).CornerRadius = UDim.new(0, 6)
-local BadgeLabel = Instance.new("TextLabel")
-BadgeLabel.Size = UDim2.new(1, 0, 1, 0)
-BadgeLabel.BackgroundTransparency = 1
-BadgeLabel.Text = "ZX"
-BadgeLabel.TextColor3 = Color3.fromRGB(10, 16, 24)
-BadgeLabel.TextScaled = true
-BadgeLabel.Font = Enum.Font.GothamBold
-BadgeLabel.Parent = AvatarBadge
+local BadgeImage = Instance.new("ImageLabel")
+BadgeImage.Size = UDim2.new(1, 0, 1, 0)
+BadgeImage.BackgroundTransparency = 1
+BadgeImage.Image = "rbxassetid://89829874726430" -- ganti dengan ID gambar kamu
+BadgeImage.ScaleType = Enum.ScaleType.Fit
+BadgeImage.Parent = AvatarBadge
 
 -- Title
 local TitleLabel = Instance.new("TextLabel")
