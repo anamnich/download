@@ -246,6 +246,11 @@ Player = {{
     }},
 
 Exploit = {{
+        Name = "Fake Donate",
+        Desc = "",
+        Tags = {"exploit"},
+        URL = "https://raw.githubusercontent.com/silentteam-87/FakeDonate/refs/heads/main/RobloxBujangInam"
+    },{
         Name = "Fiqqzr7",
         Desc = "",
         Tags = {"exploit"},
