@@ -249,7 +249,7 @@ Exploit = {{
         Name = "Fake Donate",
         Desc = "",
         Tags = {"exploit"},
-        URL = "https://raw.githubusercontent.com/silentteam-87/FakeDonate/refs/heads/main/RobloxBujangInam"
+        URL = "https://raw.githubusercontent.com/FayintXhub/FayintExploit/refs/heads/main/Fake-Donate"
     },{
         Name = "Fiqqzr7",
         Desc = "",
