@@ -289,7 +289,7 @@ Exploit = {{
         Name = "Laser",
         Desc = "untuk rusuh",
         Tags = {"exploit"},
-        URL = "https://mpangppxhub.vercel.app/laserpiwpiw"
+        URL = "https://raw.githubusercontent.com/KNTLX69/SXTHR666/refs/heads/main/SIEXTHER-HYTAMKAN"
     }, {
         Name = "Kordinat",
         Desc = "ini untuk save kodinat, agar bisa di combo sama script teleport",
