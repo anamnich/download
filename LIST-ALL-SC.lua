@@ -2,7 +2,7 @@ local Players = game:GetService("Players")
 local TweenService = game:GetService("TweenService")
 local UserInputService = game:GetService("UserInputService")
 local LocalPlayer = Players.LocalPlayer
-local WHITELIST_URL = "https://raw.githubusercontent.com/anamnich/whitelist/refs/heads/main/whitelist.json"
+local WHITELIST_URL = "https://raw.githubusercontent.com/ZassTdr/whitelist/refs/heads/main/whitelist.json"
 local HttpService = game:GetService("HttpService")
 
 local function CheckWhitelist()
