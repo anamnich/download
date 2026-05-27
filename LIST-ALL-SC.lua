@@ -164,6 +164,7 @@ local Scripts = {
     },
     Player = {
         {Name="Fly",           Desc="Terbang bebas di udara dengan speed control.", Tags={"Player"}, URL="https://raw.githubusercontent.com/anamnich/download/refs/heads/main/fly8.lua"},
+        {Name="Exp",           Desc="", Tags={"Player"}, URL="https://raw.githubusercontent.com/anamnich/download/refs/heads/main/exp.lua"},
         {Name="Clone Ava",     Desc="Visual avatar clone.",               Tags={"Player"}, URL="https://raw.githubusercontent.com/anamnich/download/refs/heads/main/cloneava7.lua"},
         {Name="Fps Booster",   Desc="Meringankan perangkat.",             Tags={"Player"}, URL="https://raw.githubusercontent.com/anamnich/download/refs/heads/main/fps2.lua"},
         {Name="Server Sepi",   Desc="Cari server dengan pemain sedikit.", Tags={"Player"}, URL="https://raw.githubusercontent.com/anamnich/download/refs/heads/main/searchserver.lua"},
