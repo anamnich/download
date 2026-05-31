@@ -1,5 +1,5 @@
 --// DRONE CAMERA v8
---// Elegant UI + Search + Profile Avatar (no ghost text) + Hover effect + Cinematic zoom
+--// Elegant UI + Search + Profile Avatar (no ghost text) + Hover effect + Cinematic zoom + Minimize Button
 
 local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
@@ -20,6 +20,7 @@ local TEXT_PRI   = Color3.fromRGB(230, 230, 240)
 local TEXT_SEC   = Color3.fromRGB(140, 140, 160)
 local BORDER     = Color3.fromRGB(40, 40, 58)
 local RED_BTN    = Color3.fromRGB(180, 60, 60)
+local YELLOW_BTN = Color3.fromRGB(50, 180, 80)
 
 -- === HELPER ===
 local function corner(r, p) local c = Instance.new("UICorner") c.CornerRadius = UDim.new(0,r) c.Parent = p end
@@ -28,14 +29,18 @@ local function stroke(t,c,p) local s=Instance.new("UIStroke") s.Thickness=t s.Co
 
 -- === GUI ROOT ===
 local gui = Instance.new("ScreenGui")
-gui.Name = "DroneCamV6"
+gui.Name = "DroneCamV8"
 gui.ResetOnSpawn = false
 gui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 gui.Parent = lp:WaitForChild("PlayerGui")
 
 -- === MAIN FRAME ===
+local FULL_HEIGHT   = 386
+local MINI_HEIGHT   = 36  -- hanya titlebar yang terlihat saat minimize
+local isMinimized   = false
+
 local frame = Instance.new("Frame")
-frame.Size = UDim2.new(0, 220, 0, 340)
+frame.Size = UDim2.new(0, 220, 0, FULL_HEIGHT)
 frame.Position = UDim2.new(0.82, 0, 0.35, 0)
 frame.BackgroundColor3 = BG_DARK
 frame.BorderSizePixel = 0
@@ -71,7 +76,7 @@ dot1.Parent = titleBar
 corner(99, dot1)
 
 local titleLabel = Instance.new("TextLabel")
-titleLabel.Size = UDim2.new(1, -60, 1, 0)
+titleLabel.Size = UDim2.new(1, -90, 1, 0)
 titleLabel.Position = UDim2.new(0, 24, 0, 0)
 titleLabel.BackgroundTransparency = 1
 titleLabel.Text = "ZassXd View"
@@ -81,6 +86,19 @@ titleLabel.TextSize = 13
 titleLabel.TextXAlignment = Enum.TextXAlignment.Left
 titleLabel.Parent = titleBar
 
+-- === MINIMIZE BUTTON ===
+local minimizeBtn = Instance.new("TextButton")
+minimizeBtn.Size = UDim2.new(0, 24, 0, 24)
+minimizeBtn.Position = UDim2.new(1, -58, 0.5, -12)  -- di sebelah kiri close button
+minimizeBtn.BackgroundColor3 = YELLOW_BTN
+minimizeBtn.Text = "–"
+minimizeBtn.TextColor3 = Color3.new(1, 1, 1)
+minimizeBtn.Font = Enum.Font.GothamBold
+minimizeBtn.TextSize = 14
+minimizeBtn.Parent = titleBar
+corner(6, minimizeBtn)
+
+-- === CLOSE BUTTON ===
 local closeBtn = Instance.new("TextButton")
 closeBtn.Size = UDim2.new(0, 24, 0, 24)
 closeBtn.Position = UDim2.new(1, -30, 0.5, -12)
@@ -93,6 +111,25 @@ closeBtn.Parent = titleBar
 corner(6, closeBtn)
 
 closeBtn.MouseButton1Click:Connect(function() gui.Enabled = false end)
+
+-- === MINIMIZE LOGIC ===
+minimizeBtn.MouseButton1Click:Connect(function()
+	isMinimized = not isMinimized
+
+	local targetHeight = isMinimized and MINI_HEIGHT or FULL_HEIGHT
+	local tweenInfo = TweenInfo.new(0.25, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
+
+	local tween = TweenService:Create(frame, tweenInfo, {
+		Size = UDim2.new(0, 220, 0, targetHeight)
+	})
+	tween:Play()
+
+	-- update teks tombol minimize
+	minimizeBtn.Text = isMinimized and "□" or "–"
+
+	-- sembunyikan/tampilkan fix strip agar titlebar corner tetap rapi saat minimize
+	titleFix.Visible = not isMinimized
+end)
 
 -- === CONTENT AREA ===
 local content = Instance.new("Frame")
@@ -179,8 +216,92 @@ local function makeBtn(text, color, order)
 	return btn
 end
 
-local followButton  = makeBtn("🎥  Enable Camera", ACCENT, 3)
+local followButton   = makeBtn("🎥  Enable Camera", ACCENT, 3)
 local teleportButton = makeBtn("⚡  Teleport", Color3.fromRGB(50, 140, 100), 4)
+
+-- === ZOOM ROW (untuk HP / touch) ===
+local zoomRow = Instance.new("Frame")
+zoomRow.Size = UDim2.new(1, 0, 0, 32)
+zoomRow.BackgroundTransparency = 1
+zoomRow.LayoutOrder = 5
+zoomRow.Parent = content
+
+local zoomLabel = Instance.new("TextLabel")
+zoomLabel.Size = UDim2.new(1, -76, 1, 0)
+zoomLabel.BackgroundTransparency = 1
+zoomLabel.Text = "🔭  Zoom Kamera"
+zoomLabel.TextColor3 = TEXT_SEC
+zoomLabel.Font = Enum.Font.Gotham
+zoomLabel.TextSize = 11
+zoomLabel.TextXAlignment = Enum.TextXAlignment.Left
+zoomLabel.Parent = zoomRow
+
+local zoomOut = Instance.new("TextButton")
+zoomOut.Size = UDim2.new(0, 34, 1, 0)
+zoomOut.Position = UDim2.new(1, -74, 0, 0)
+zoomOut.BackgroundColor3 = BG_ITEM
+zoomOut.Text = "–"
+zoomOut.TextColor3 = TEXT_PRI
+zoomOut.Font = Enum.Font.GothamBold
+zoomOut.TextSize = 16
+zoomOut.BorderSizePixel = 0
+zoomOut.Parent = zoomRow
+corner(8, zoomOut)
+stroke(1, BORDER, zoomOut)
+
+local zoomIn = Instance.new("TextButton")
+zoomIn.Size = UDim2.new(0, 34, 1, 0)
+zoomIn.Position = UDim2.new(1, -36, 0, 0)
+zoomIn.BackgroundColor3 = BG_ITEM
+zoomIn.Text = "+"
+zoomIn.TextColor3 = TEXT_PRI
+zoomIn.Font = Enum.Font.GothamBold
+zoomIn.TextSize = 16
+zoomIn.BorderSizePixel = 0
+zoomIn.Parent = zoomRow
+corner(8, zoomIn)
+stroke(1, BORDER, zoomIn)
+
+-- tahan tombol = zoom terus menerus (support PC & HP)
+local zoomHoldConn = nil
+local function startZoom(dir)
+	if zoomHoldConn then zoomHoldConn:Disconnect() end
+	zoomHoldConn = RunService.RenderStepped:Connect(function()
+		if cameraFollow then
+			zoomDist = math.clamp(zoomDist + dir * 0.5, 3, 60)
+		end
+	end)
+end
+local function stopZoom()
+	if zoomHoldConn then zoomHoldConn:Disconnect() zoomHoldConn = nil end
+end
+
+-- pakai InputBegan/Ended agar berfungsi di HP (touch) maupun PC (mouse)
+zoomOut.InputBegan:Connect(function(input)
+	if input.UserInputType == Enum.UserInputType.Touch
+		or input.UserInputType == Enum.UserInputType.MouseButton1 then
+		startZoom(1)
+	end
+end)
+zoomOut.InputEnded:Connect(function(input)
+	if input.UserInputType == Enum.UserInputType.Touch
+		or input.UserInputType == Enum.UserInputType.MouseButton1 then
+		stopZoom()
+	end
+end)
+
+zoomIn.InputBegan:Connect(function(input)
+	if input.UserInputType == Enum.UserInputType.Touch
+		or input.UserInputType == Enum.UserInputType.MouseButton1 then
+		startZoom(-1)
+	end
+end)
+zoomIn.InputEnded:Connect(function(input)
+	if input.UserInputType == Enum.UserInputType.Touch
+		or input.UserInputType == Enum.UserInputType.MouseButton1 then
+		stopZoom()
+	end
+end)
 
 -- === STATE ===
 local currentTarget = nil
@@ -215,12 +336,11 @@ local function buildList(filter)
 				btn.Size = UDim2.new(1, 0, 0, 40)
 				btn.BackgroundColor3 = BG_ITEM
 				btn.BorderSizePixel = 0
-				btn.Text = ""              -- KOSONGKAN agar tidak muncul di belakang avatar
+				btn.Text = ""
 				btn.AutoButtonColor = false
 				btn.Parent = playerList
 				corner(8, btn)
 
-				-- avatar frame (bulat, posisi tengah vertikal)
 				local avatarFrame = Instance.new("Frame")
 				avatarFrame.Size = UDim2.new(0, 28, 0, 28)
 				avatarFrame.Position = UDim2.new(0, 8, 0.5, -14)
@@ -231,7 +351,6 @@ local function buildList(filter)
 				corner(99, avatarFrame)
 				stroke(1, ACCENT, avatarFrame)
 
-				-- foto profil
 				local avatarImg = Instance.new("ImageLabel")
 				avatarImg.Size = UDim2.new(1, 0, 1, 0)
 				avatarImg.BackgroundTransparency = 1
@@ -241,7 +360,6 @@ local function buildList(filter)
 				avatarImg.Parent = avatarFrame
 				corner(99, avatarImg)
 
-				-- fallback inisial
 				local initLabel = Instance.new("TextLabel")
 				initLabel.Size = UDim2.new(1, 0, 1, 0)
 				initLabel.BackgroundTransparency = 1
@@ -252,7 +370,6 @@ local function buildList(filter)
 				initLabel.ZIndex = btn.ZIndex + 2
 				initLabel.Parent = avatarFrame
 
-				-- fetch foto async
 				task.spawn(function()
 					local ok, thumb = pcall(function()
 						return Players:GetUserThumbnailAsync(
@@ -267,7 +384,6 @@ local function buildList(filter)
 					end
 				end)
 
-				-- kolom nama (mulai setelah avatar)
 				local nameCol = Instance.new("Frame")
 				nameCol.Size = UDim2.new(1, -46, 1, 0)
 				nameCol.Position = UDim2.new(0, 44, 0, 0)
@@ -301,7 +417,6 @@ local function buildList(filter)
 				displayL.ZIndex = btn.ZIndex + 2
 				displayL.Parent = nameCol
 
-				-- hover effect
 				btn.MouseEnter:Connect(function()
 					if currentTarget ~= p then
 						btn.BackgroundColor3 = Color3.fromRGB(33, 33, 46)
@@ -313,7 +428,6 @@ local function buildList(filter)
 					end
 				end)
 
-				-- highlight jika sudah dipilih sebelumnya
 				if currentTarget == p then
 					btn.BackgroundColor3 = BG_HOVER
 					stroke(1, ACCENT, btn)
@@ -437,12 +551,13 @@ teleportButton.MouseButton1Click:Connect(function()
 		local myChar = lp.Character or lp.CharacterAdded:Wait()
 		local myHRP  = myChar:WaitForChild("HumanoidRootPart")
 
-		camera.CameraType = Enum.CameraType.Scriptable
-		camera.CFrame = targetHRP.CFrame * CFrame.new(0, 5, 10)
-		task.wait(0.2)
-
 		workspace.FallenPartsDestroyHeight = -math.huge
 		myHRP.CFrame = targetHRP.CFrame + Vector3.new(0, 3, 0)
+
+		-- hanya ubah kamera jika drone camera sedang aktif
+		if cameraFollow then
+			camera.CameraType = Enum.CameraType.Scriptable
+		end
 
 		teleportButton.Text = "✅  Teleported!"
 		task.wait(1.2)
