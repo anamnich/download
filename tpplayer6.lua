@@ -1,5 +1,5 @@
 --// DRONE CAMERA v8
---// Elegant UI + Search + Profile Avatar (no ghost text) + Hover effect + Cinematic zoom + Minimize Button
+--// Elegant UI + Search + Profile Avatar + Minimize + Touch Rotate (HP)
 
 local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
@@ -15,12 +15,11 @@ local BG_CARD    = Color3.fromRGB(20, 20, 28)
 local BG_ITEM    = Color3.fromRGB(28, 28, 38)
 local BG_HOVER   = Color3.fromRGB(38, 38, 52)
 local ACCENT     = Color3.fromRGB(110, 86, 220)
-local ACCENT2    = Color3.fromRGB(80, 200, 160)
 local TEXT_PRI   = Color3.fromRGB(230, 230, 240)
 local TEXT_SEC   = Color3.fromRGB(140, 140, 160)
 local BORDER     = Color3.fromRGB(40, 40, 58)
 local RED_BTN    = Color3.fromRGB(180, 60, 60)
-local YELLOW_BTN = Color3.fromRGB(50, 180, 80)
+local GREEN_BTN  = Color3.fromRGB(50, 180, 80)
 
 -- === HELPER ===
 local function corner(r, p) local c = Instance.new("UICorner") c.CornerRadius = UDim.new(0,r) c.Parent = p end
@@ -35,9 +34,9 @@ gui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 gui.Parent = lp:WaitForChild("PlayerGui")
 
 -- === MAIN FRAME ===
-local FULL_HEIGHT   = 386
-local MINI_HEIGHT   = 36  -- hanya titlebar yang terlihat saat minimize
-local isMinimized   = false
+local FULL_HEIGHT = 386
+local MINI_HEIGHT = 36
+local isMinimized = false
 
 local frame = Instance.new("Frame")
 frame.Size = UDim2.new(0, 220, 0, FULL_HEIGHT)
@@ -59,7 +58,6 @@ titleBar.BorderSizePixel = 0
 titleBar.Parent = frame
 corner(12, titleBar)
 
--- fix bottom corners of titlebar
 local titleFix = Instance.new("Frame")
 titleFix.Size = UDim2.new(1, 0, 0.5, 0)
 titleFix.Position = UDim2.new(0, 0, 0.5, 0)
@@ -89,8 +87,8 @@ titleLabel.Parent = titleBar
 -- === MINIMIZE BUTTON ===
 local minimizeBtn = Instance.new("TextButton")
 minimizeBtn.Size = UDim2.new(0, 24, 0, 24)
-minimizeBtn.Position = UDim2.new(1, -58, 0.5, -12)  -- di sebelah kiri close button
-minimizeBtn.BackgroundColor3 = YELLOW_BTN
+minimizeBtn.Position = UDim2.new(1, -58, 0.5, -12)
+minimizeBtn.BackgroundColor3 = GREEN_BTN
 minimizeBtn.Text = "–"
 minimizeBtn.TextColor3 = Color3.new(1, 1, 1)
 minimizeBtn.Font = Enum.Font.GothamBold
@@ -112,22 +110,13 @@ corner(6, closeBtn)
 
 closeBtn.MouseButton1Click:Connect(function() gui.Enabled = false end)
 
--- === MINIMIZE LOGIC ===
 minimizeBtn.MouseButton1Click:Connect(function()
 	isMinimized = not isMinimized
-
 	local targetHeight = isMinimized and MINI_HEIGHT or FULL_HEIGHT
-	local tweenInfo = TweenInfo.new(0.25, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
-
-	local tween = TweenService:Create(frame, tweenInfo, {
+	TweenService:Create(frame, TweenInfo.new(0.25, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {
 		Size = UDim2.new(0, 220, 0, targetHeight)
-	})
-	tween:Play()
-
-	-- update teks tombol minimize
+	}):Play()
 	minimizeBtn.Text = isMinimized and "□" or "–"
-
-	-- sembunyikan/tampilkan fix strip agar titlebar corner tetap rapi saat minimize
 	titleFix.Visible = not isMinimized
 end)
 
@@ -229,7 +218,7 @@ local allButtons    = {}
 local followButton   = makeBtn("🎥  Enable Camera", ACCENT, 3)
 local teleportButton = makeBtn("⚡  Teleport", Color3.fromRGB(50, 140, 100), 4)
 
--- === ZOOM ROW (untuk HP / touch) ===
+-- === ZOOM ROW ===
 local zoomRow = Instance.new("Frame")
 zoomRow.Size = UDim2.new(1, 0, 0, 32)
 zoomRow.BackgroundTransparency = 1
@@ -272,7 +261,6 @@ zoomIn.Parent = zoomRow
 corner(8, zoomIn)
 stroke(1, BORDER, zoomIn)
 
--- zoom: tap sekali = zoom sedikit, pakai MouseButton1Click agar pasti trigger di HP & PC
 local zoomHoldConn = nil
 local function startZoom(dir)
 	if zoomHoldConn then zoomHoldConn:Disconnect() end
@@ -286,31 +274,16 @@ local function stopZoom()
 	if zoomHoldConn then zoomHoldConn:Disconnect() zoomHoldConn = nil end
 end
 
--- MouseButton1Click berfungsi di HP (tap) maupun PC (klik)
 zoomOut.MouseButton1Click:Connect(function()
-	if cameraFollow then
-		zoomDist = math.clamp(zoomDist + 3, 3, 60)
-	end
+	if cameraFollow then zoomDist = math.clamp(zoomDist + 3, 3, 60) end
 end)
 zoomIn.MouseButton1Click:Connect(function()
-	if cameraFollow then
-		zoomDist = math.clamp(zoomDist - 3, 3, 60)
-	end
+	if cameraFollow then zoomDist = math.clamp(zoomDist - 3, 3, 60) end
 end)
-
--- tahan tombol untuk zoom terus (PC)
 zoomOut.MouseButton1Down:Connect(function() startZoom(1) end)
 zoomOut.MouseButton1Up:Connect(stopZoom)
 zoomIn.MouseButton1Down:Connect(function() startZoom(-1) end)
 zoomIn.MouseButton1Up:Connect(stopZoom)
-
--- touch events untuk HP
-zoomOut.TouchTap:Connect(function()
-	if cameraFollow then zoomDist = math.clamp(zoomDist + 3, 3, 60) end
-end)
-zoomIn.TouchTap:Connect(function()
-	if cameraFollow then zoomDist = math.clamp(zoomDist - 3, 3, 60) end
-end)
 zoomOut.TouchLongPress:Connect(function() startZoom(1) end)
 zoomIn.TouchLongPress:Connect(function() startZoom(-1) end)
 
@@ -419,14 +392,10 @@ local function buildList(filter)
 				displayL.Parent = nameCol
 
 				btn.MouseEnter:Connect(function()
-					if currentTarget ~= p then
-						btn.BackgroundColor3 = Color3.fromRGB(33, 33, 46)
-					end
+					if currentTarget ~= p then btn.BackgroundColor3 = Color3.fromRGB(33, 33, 46) end
 				end)
 				btn.MouseLeave:Connect(function()
-					if currentTarget ~= p then
-						btn.BackgroundColor3 = BG_ITEM
-					end
+					if currentTarget ~= p then btn.BackgroundColor3 = BG_ITEM end
 				end)
 
 				if currentTarget == p then
@@ -456,12 +425,9 @@ end
 buildList("")
 Players.PlayerAdded:Connect(function() buildList(searchBox.Text) end)
 Players.PlayerRemoving:Connect(function() buildList(searchBox.Text) end)
+searchBox:GetPropertyChangedSignal("Text"):Connect(function() buildList(searchBox.Text) end)
 
-searchBox:GetPropertyChangedSignal("Text"):Connect(function()
-	buildList(searchBox.Text)
-end)
-
--- === MOUSE CAMERA ===
+-- === MOUSE CAMERA (PC) ===
 UserInputService.InputBegan:Connect(function(input)
 	if input.UserInputType == Enum.UserInputType.MouseButton2 and cameraFollow then
 		UserInputService.MouseBehavior = Enum.MouseBehavior.LockCurrentPosition
@@ -484,6 +450,33 @@ UserInputService.InputChanged:Connect(function(input)
 		yaw   = yaw - input.Delta.X * sensitivity
 		pitch = math.clamp(pitch - input.Delta.Y * sensitivity, -80, 80)
 	end
+end)
+
+-- === TOUCH ROTATE (HP) ===
+-- Swipe di area luar GUI = putar kamera kanan/kiri/atas/bawah
+local touchStart  = nil
+local touchActive = false
+
+UserInputService.TouchStarted:Connect(function(touch, gameProcessed)
+	-- gameProcessed = true artinya sentuhan kena tombol/GUI, skip
+	if gameProcessed then return end
+	if not cameraFollow then return end
+	touchStart  = Vector2.new(touch.Position.X, touch.Position.Y)
+	touchActive = true
+end)
+
+UserInputService.TouchMoved:Connect(function(touch, gameProcessed)
+	if not touchActive or not cameraFollow or not touchStart then return end
+	local current = Vector2.new(touch.Position.X, touch.Position.Y)
+	local delta   = current - touchStart
+	touchStart    = current  -- update supaya delta per-frame, bukan akumulasi
+	yaw   = yaw - delta.X * sensitivity * 0.5
+	pitch = math.clamp(pitch - delta.Y * sensitivity * 0.5, -80, 80)
+end)
+
+UserInputService.TouchEnded:Connect(function()
+	touchActive = false
+	touchStart  = nil
 end)
 
 -- === CAMERA LOOP ===
@@ -555,7 +548,6 @@ teleportButton.MouseButton1Click:Connect(function()
 		workspace.FallenPartsDestroyHeight = -math.huge
 		myHRP.CFrame = targetHRP.CFrame + Vector3.new(0, 3, 0)
 
-		-- hanya ubah kamera jika drone camera sedang aktif
 		if cameraFollow then
 			camera.CameraType = Enum.CameraType.Scriptable
 		end
