@@ -216,6 +216,16 @@ local function makeBtn(text, color, order)
 	return btn
 end
 
+-- === STATE ===
+local currentTarget = nil
+local cameraFollow  = false
+local sensitivity   = 0.25
+local pitch, yaw    = 15, 0
+local zoomDist      = 10
+local smoothSpeed   = 0.1
+local freeRotate    = false
+local allButtons    = {}
+
 local followButton   = makeBtn("🎥  Enable Camera", ACCENT, 3)
 local teleportButton = makeBtn("⚡  Teleport", Color3.fromRGB(50, 140, 100), 4)
 
@@ -262,13 +272,13 @@ zoomIn.Parent = zoomRow
 corner(8, zoomIn)
 stroke(1, BORDER, zoomIn)
 
--- tahan tombol = zoom terus menerus (support PC & HP)
+-- zoom: tap sekali = zoom sedikit, pakai MouseButton1Click agar pasti trigger di HP & PC
 local zoomHoldConn = nil
 local function startZoom(dir)
 	if zoomHoldConn then zoomHoldConn:Disconnect() end
 	zoomHoldConn = RunService.RenderStepped:Connect(function()
 		if cameraFollow then
-			zoomDist = math.clamp(zoomDist + dir * 0.5, 3, 60)
+			zoomDist = math.clamp(zoomDist + dir * 0.4, 3, 60)
 		end
 	end)
 end
@@ -276,42 +286,33 @@ local function stopZoom()
 	if zoomHoldConn then zoomHoldConn:Disconnect() zoomHoldConn = nil end
 end
 
--- pakai InputBegan/Ended agar berfungsi di HP (touch) maupun PC (mouse)
-zoomOut.InputBegan:Connect(function(input)
-	if input.UserInputType == Enum.UserInputType.Touch
-		or input.UserInputType == Enum.UserInputType.MouseButton1 then
-		startZoom(1)
+-- MouseButton1Click berfungsi di HP (tap) maupun PC (klik)
+zoomOut.MouseButton1Click:Connect(function()
+	if cameraFollow then
+		zoomDist = math.clamp(zoomDist + 3, 3, 60)
 	end
 end)
-zoomOut.InputEnded:Connect(function(input)
-	if input.UserInputType == Enum.UserInputType.Touch
-		or input.UserInputType == Enum.UserInputType.MouseButton1 then
-		stopZoom()
-	end
-end)
-
-zoomIn.InputBegan:Connect(function(input)
-	if input.UserInputType == Enum.UserInputType.Touch
-		or input.UserInputType == Enum.UserInputType.MouseButton1 then
-		startZoom(-1)
-	end
-end)
-zoomIn.InputEnded:Connect(function(input)
-	if input.UserInputType == Enum.UserInputType.Touch
-		or input.UserInputType == Enum.UserInputType.MouseButton1 then
-		stopZoom()
+zoomIn.MouseButton1Click:Connect(function()
+	if cameraFollow then
+		zoomDist = math.clamp(zoomDist - 3, 3, 60)
 	end
 end)
 
--- === STATE ===
-local currentTarget = nil
-local cameraFollow  = false
-local sensitivity   = 0.25
-local pitch, yaw    = 15, 0
-local zoomDist      = 10
-local smoothSpeed   = 0.1
-local freeRotate    = false
-local allButtons    = {}
+-- tahan tombol untuk zoom terus (PC)
+zoomOut.MouseButton1Down:Connect(function() startZoom(1) end)
+zoomOut.MouseButton1Up:Connect(stopZoom)
+zoomIn.MouseButton1Down:Connect(function() startZoom(-1) end)
+zoomIn.MouseButton1Up:Connect(stopZoom)
+
+-- touch events untuk HP
+zoomOut.TouchTap:Connect(function()
+	if cameraFollow then zoomDist = math.clamp(zoomDist + 3, 3, 60) end
+end)
+zoomIn.TouchTap:Connect(function()
+	if cameraFollow then zoomDist = math.clamp(zoomDist - 3, 3, 60) end
+end)
+zoomOut.TouchLongPress:Connect(function() startZoom(1) end)
+zoomIn.TouchLongPress:Connect(function() startZoom(-1) end)
 
 -- === PLAYER LIST BUILDER ===
 local function getDisplayName(p)
